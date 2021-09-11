@@ -51,21 +51,23 @@ INSERT INTO [dbo].[ctrl_table]
            ,1
            ,null
            ,1)
-		   
-DECLARE @json_construct varchar(MAX) = '{"type": "TabularTranslator", "mappings": {X}}';  
-DECLARE @json VARCHAR(MAX);  
-      
-SET @json = (  
+	   
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------		   
 
-SELECT  
-        a.[source.name] AS 'source.name',   
-        a.[sink.name] AS 'sink.name'   
-    FROM dbo.ColumnMapper as a  
-  WHERE a.tablename ='@{item().sourceobj}'
+DECLARE @json_header varchar(MAX) = '{"type": "TabularTranslator", "mappings": '; 
 
-    FOR JSON PATH );  
-   
-    SELECT REPLACE(@json_construct,'{X}', @json) AS json_output;  
+DECLARE @json VARCHAR(MAX); 
+ 
+SET @json = (
+SELECT 
+      [source.name], 
+      [sink.name] 
+FROM dbo.ColumnMapper 
+WHERE  tablename ='@{item().sourceobj}'
+FOR JSON PATH ); 
+
+SELECT CONCAT(@json_header,@json,'}') AS json_string;
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 		   
 		   
 CREATE TABLE [dbo].[ColumnMapper](
@@ -93,5 +95,5 @@ insert into [dbo].[ColumnMapper] values ('opportunity','IsClosed','IsClosed');
 insert into [dbo].[ColumnMapper] values ('opportunity','IsWon','IsWon');
 insert into [dbo].[ColumnMapper] values ('opportunity','ForecastCategory','ForecastCategory');
 insert into [dbo].[ColumnMapper] values ('opportunity','LastModifiedDate','LastModifiedDate');
-
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 
