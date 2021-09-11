@@ -96,4 +96,6 @@ insert into [dbo].[ColumnMapper] values ('opportunity','IsWon','IsWon');
 insert into [dbo].[ColumnMapper] values ('opportunity','ForecastCategory','ForecastCategory');
 insert into [dbo].[ColumnMapper] values ('opportunity','LastModifiedDate','LastModifiedDate');
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
-
+CREATE procedure [dbo].[sp_updatesync] @table nvarchar(20)
+as
+update [ctrl_table] set  last_updt_dt_time=getutcdate() where sourceobj=@table
